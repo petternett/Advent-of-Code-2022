@@ -1,6 +1,7 @@
 import re
 
-cmd_re = re.compile(r'\$ (.*)(?:\s(.*)?)')  # cmd_re[0]: cmd, cmd_re[1] (optional): args
+cmd_re = re.compile(r'\$ (\w+)\s?(\w+)?')  # cmd_re[0]: cmd, cmd_re[1] (optional): args
+dir_re = re.compile(r'dir (.*)')
 
 class Tree():
     def __init__(self, parent, data):
@@ -8,7 +9,7 @@ class Tree():
         self.data = data
         self.children = []
 
-    def dfs(top):
+    def dfs(self, top):
         pass
 
 
@@ -25,19 +26,28 @@ for line in data:
     if f != []:  # line is cmd
         f = f[0]
         if (f[0] == "cd"):
-            print("CD!!!!!!!!!!!!")
-            # if (f[1] == ".."): cur_dir = cur_dir.parent; continue
+            if (f[1] == ".."): cur_dir = cur_dir.parent; continue
 
-            # cur_dir.children.append(new_dir := Tree(cur_dir, f[1]))
-            # cur_dir = new_dir
+            # TODO if not already there
+            cur_dir.children.append(new_dir := Tree(cur_dir, f[1]))
+            cur_dir = new_dir
             
         if (f[0] == "ls"):  # TODO: needed?
-            print("ls !!!!!!!!!!!!!!!!")
             continue
 
         continue
 
     # Line is result (size filename / dir x)
-    print(line)
+    f = dir_re.findall(line)
+    if f != []:
+        f = f[0]
+        print(f"DIR {f}")
+        dir_exists = False
+        for child in cur_dir.children:
+            if child.data
+        cur_dir.children.append(new_dir := Tree(cur_dir, f))
+    else:
+        print(line)
+
     # fsize = int(line.split()[0])
     # fname = line.split[1]
